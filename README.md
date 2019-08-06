@@ -15,8 +15,8 @@ tqdm == 4.13.1
 
 
 ## training:
-### dataset 
-to ensure training and testing, the data set should look like this.  
+### dataset （scPDB-2017）
+To ensure training and testing, the data set should look like this.  
 >ProteinDescriptor
 >>data
 >>>data_raw
@@ -38,5 +38,11 @@ to ensure training and testing, the data set should look like this.
 >>>>>1aiq_2
 >>>>>>protein.mol2,protein.pdbqt
 
+Because the data of scPDB is too large, only a small part is provided for operation.
 
+### usage 
+```bash
+python train.py
+```
+The features of the training set，validation set and testing set are stored in data/feature directory.
 
