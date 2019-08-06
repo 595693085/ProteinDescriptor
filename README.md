@@ -38,6 +38,8 @@ To ensure training and testing, the data set should look like this.
 >>>>>1aiq_2
 >>>>>>protein.mol2, protein.pdbqt
 
+The training set and validation set must contain site.mol2 file for every protein (for label determination). At the same time, in order to obtain protein feature, the mol2 and pdbqt files of each protein should be included in the dataset, and the pdbqt files can be obtained through openbabel or autodock script.  
+
 Because the data of scPDB is too large, only a small part is provided for operation.
 
 ### usage 
