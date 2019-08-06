@@ -22,21 +22,21 @@ To ensure training and testing, the data set should look like this.
 >>>data_raw
 >>>>train
 >>>>>1a4i_1
->>>>>>protein.mol2,protein.pdbqt,site.mol2
+>>>>>>protein.mol2, protein.pdbqt, site.mol2
 
 
 >>data
 >>>data_raw
 >>>>valid
 >>>>>1a4l_2
->>>>>>protein.mol2,protein.pdbqt,site.mol2
+>>>>>>protein.mol2, protein.pdbqt, site.mol2
 
 
 >>data  
 >>>data_raw
 >>>>test
 >>>>>1aiq_2
->>>>>>protein.mol2,protein.pdbqt
+>>>>>>protein.mol2, protein.pdbqt
 
 Because the data of scPDB is too large, only a small part is provided for operation.
 
