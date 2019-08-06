@@ -29,8 +29,6 @@ to ensure training and testing, the data set should look like this.
 >>>data_raw
 >>>>valid
 >>>>>1a4l_2
->>>>>>protein.mol2
->>>>>>protein.pdbqt
 >>>>>>protein.mol2,protein.pdbqt,site.mol2
 
 
