@@ -7,14 +7,33 @@ A four-channel grid protein descriptor is constructed based on ligsite, L-J pote
 
 
 ## requirement:
-*python == 3.6.x  
-*keras == 2.2.4  
-*tenforflow-gpu == 1.13.1  
-*numpy == 1.16.4  
-*tqdm == 4.13.1  
+python == 3.6.x  
+keras == 2.2.4  
+tenforflow-gpu == 1.13.1  
+numpy == 1.16.4  
+tqdm == 4.13.1  
 
 
 ## training:
+### dataset 
+to ensure training and testing, the data set should look like this.  
+>ProteinDescriptor
+>>data
+>>>data_raw
+>>>>train
+>>>>>1a4i_1
+>>>>>>protein.mol2
+>>>>>>protein.pdbqt
+>>>>>>site.mol2
+>>>>valid
+>>>>>1a4l_2
+>>>>>>protein.mol2
+>>>>>>protein.pdbqt
+>>>>>>site.mol2
+>>>>test
+>>>>>1aiq_2
+>>>>>>protein.mol2
+>>>>>>protein.pdbqt
 
 
 
