@@ -24,7 +24,7 @@ to ensure training and testing, the data set should look like this.
 >>>>>1a4i_1
 >>>>>>protein.mol2
 >>>>>>protein.pdbqt
->>>>>>site.mol2
+>>>>>>site.mol2  
 >>data
 >>>data_raw
 >>>>valid
@@ -32,7 +32,7 @@ to ensure training and testing, the data set should look like this.
 >>>>>>protein.mol2
 >>>>>>protein.pdbqt
 >>>>>>site.mol2
->>data
+>>data  
 >>>data_raw
 >>>>test
 >>>>>1aiq_2
