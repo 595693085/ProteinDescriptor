@@ -44,5 +44,5 @@ Because the data of scPDB is too large, only a small part is provided for operat
 ```bash
 python train.py
 ```
-The features (grid descriptor) of the training set，validation set and testing set are stored in data/feature directory. In order to be more efficient， the features of all proteins are calculted before model training and testing.
+The features (grid descriptor) of the training set，validation set and testing set are stored in data/feature directory. In order to be more efficient, the features of all proteins are calculted and stored before model training and testing.
 
