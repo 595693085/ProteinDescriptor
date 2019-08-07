@@ -1,0 +1,3 @@
+result for 1cg6_1
+score: 0.96298677 predicted center: [62.6689 16.075  30.1313]
+number of all predicted pockets: 1

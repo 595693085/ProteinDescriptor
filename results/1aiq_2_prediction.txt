@@ -1,0 +1,3 @@
+result for 1aiq_2
+score: 0.972879 predicted center: [46.025  38.9188 23.7256]
+number of all predicted pockets: 1

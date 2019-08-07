@@ -1,0 +1,3 @@
+result for 2ga2_1
+score: 0.96174955 predicted center: [19.7985 30.413  17.2416]
+number of all predicted pockets: 1

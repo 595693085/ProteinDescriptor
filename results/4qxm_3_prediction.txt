@@ -1,0 +1,4 @@
+result for 4qxm_3
+score: 0.90806395 predicted center: [ -3.1691   0.9348 -12.3098]
+score: 0.9051713 predicted center: [-8.4191  4.9348 -1.5598]
+number of all predicted pockets: 2
