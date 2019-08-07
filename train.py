@@ -13,9 +13,9 @@ from predict import predict
 
 
 # in order for acceleration, write all training proteins features
-def writeFeatures(pdb_list, raw_data_path, feature_path):
-    random.shuffle(pdb_list)
-    # print("test",len(pdb_list))
+def writeFeatures(pdb_list, raw_data_path, feature_path, test_flag=False):
+    # random.shuffle(pdb_list)
+    # print("writeFeatures",pdb_list)
     for pdb in pdb_list:
         print("processing ", pdb)
         protein_np_save_file_1 = os.path.join(feature_path, pdb, "ligsite.npy")
@@ -25,14 +25,20 @@ def writeFeatures(pdb_list, raw_data_path, feature_path):
         protein_center_save_file = os.path.join(feature_path, pdb, "center_position.npy")
         # print(protein_np_save_file_1)
         if os.path.exists(protein_np_save_file_1) and os.path.exists(protein_np_save_file_2) and os.path.exists(
-                protein_np_save_file_3) and os.path.exists(protein_np_save_file_4) and os.path.exists(
-            protein_center_save_file):
-            print(pdb, "already exists.")
-            continue
+                protein_np_save_file_3) and os.path.exists(protein_np_save_file_4):
+            # for test, there is no need to save site position,
+            # but for training and validation,site position is used for label determination
+            if not test_flag and os.path.exists(protein_center_save_file) or test_flag:
+                print(pdb, "already exists.")
+                continue
 
         mol2_file_name = os.path.join(raw_data_path, pdb, "protein.mol2")
         pdbqt_file_name = os.path.join(raw_data_path, pdb, "protein.pdbqt")
         site_mol2_file_name = os.path.join(raw_data_path, pdb, "site.mol2")
+
+        # for test, there is no need to parse site.mol2
+        if test_flag:
+            site_mol2_file_name = ""
         getProteinGrids(config, mol2_file_name, pdbqt_file_name, feature_path, pdb_name=pdb,
                         site_mol2_file_name=site_mol2_file_name,
                         buffer_size=8, resolution=1, train_flag=True, display_flag=True)
@@ -62,7 +68,7 @@ def train(train_pdb_list, valid_pdb_list, train_feature_dir, valid_feature_dir, 
     callbacks_list = [checkpoint]
     model.fit_generator(train_data_generator, epochs=30, verbose=1, use_multiprocessing=True, workers=16,
                         callbacks=callbacks_list, validation_data=valid_data_generator)
-    model.save(model_path)
+    model.save(os.path.join(model_path, "model.h5"))
     print("training over.")
 
 
@@ -80,6 +86,7 @@ if __name__ == '__main__':
     import tensorflow as tf
     from keras.backend.tensorflow_backend import set_session
     from multiprocessing import Pool, cpu_count
+    import multiprocessing
 
     gpu_config = tf.ConfigProto()
     gpu_config.gpu_options.allow_growth = True
@@ -108,16 +115,25 @@ if __name__ == '__main__':
     # print(len(train_pdb_list))
     # print(len(valid_pdb_list))
     # print(len(test_pdb_list))
-    pool = Pool(processes=cpu_count())
-    for i in range(0, len(train_pdb_list), 10):
-        pool.apply_async(writeFeatures, (train_pdb_list, train_data_dir, train_feature_dir))
-    for i in range(0, len(valid_pdb_list), 10):
-        pool.apply_async(writeFeatures, (valid_pdb_list, valid_data_dir, valid_feature_dir))
-    for i in range(0, len(test_pdb_list), 10):
-        pool.apply_async(writeFeatures, (test_pdb_list, test_data_dir, test_feature_dir))
+    # pool = Pool(processes=cpu_count())
+    # writeFeatures(train_pdb_list, train_data_dir, train_feature_dir)
+    # writeFeatures(valid_pdb_list, valid_data_dir, valid_feature_dir)
+    # writeFeatures(test_pdb_list, test_data_dir, test_feature_dir, True)
+    with multiprocessing.Pool(processes=cpu_count()) as pool:
+        for i in range(0, len(train_pdb_list)):
+            temp_protein = [train_pdb_list[i]]
+            pool.apply_async(writeFeatures, (temp_protein, train_data_dir, train_feature_dir))
 
-    pool.close()
-    pool.join()
+        for i in range(0, len(valid_pdb_list)):
+            temp_protein = [valid_pdb_list[i]]
+            pool.apply_async(writeFeatures, (temp_protein, valid_data_dir, valid_feature_dir))
+
+        for i in range(0, len(test_pdb_list)):
+            temp_protein = [test_pdb_list[i]]
+            pool.apply_async(writeFeatures, (temp_protein, test_data_dir, test_feature_dir, True))
+
+        pool.close()
+        pool.join()
 
     # for training
     if config.train:

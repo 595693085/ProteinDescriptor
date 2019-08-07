@@ -6,7 +6,7 @@ import sys
 class Config():
     def __init__(self):
         # for model
-        self.train = True
+        self.train = False
         self.test = True
         # self.predict = True
         # self.feature_write = True

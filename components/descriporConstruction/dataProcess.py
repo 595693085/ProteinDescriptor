@@ -43,25 +43,28 @@ def computerPDBCenter(pdb_file):
 
 
 # get the protein all channel grids
-def getProteinGrids(config, mol2_file_name, pdbqt_file_name, feature_path, pdb_name="protein", site_mol2_file_name=None,
-                    buffer_size=8, resolution=1, train_flag=False,display_flag=False):
+def getProteinGrids(config, mol2_file_name, pdbqt_file_name, feature_path, pdb_name="protein", site_mol2_file_name="",
+                    buffer_size=8, resolution=1, train_flag=False, display_flag=False):
     try:
         site_center_np = np.array([0, 0, 0])
-        if train_flag:
+        if train_flag and site_mol2_file_name != "":
             site_center_np = computerMol2Center(site_mol2_file_name)
         protein = readProtein(config, mol2_file_name, pdbqt_file_name, pdb_name)
-        site_center_grid = atomCoorToGridPosition(site_center_np, protein.Mol2MinCoorNp, buffer_size=buffer_size,resolution=resolution)
+        site_center_grid = atomCoorToGridPosition(site_center_np, protein.Mol2MinCoorNp, buffer_size=buffer_size,
+                                                  resolution=resolution)
 
         protein_span = [int(protein.Mol2CoorSpanNp[0]), int(protein.Mol2CoorSpanNp[1]), int(protein.Mol2CoorSpanNp[2])]
         protein_atom_grid = createProteinFillGrid(protein.Mol2AtomsList, protein_span, protein.Mol2MinCoorNp,
                                                   buffer_size=buffer_size, resolution=resolution, fill_value=1)
         grid_channel_1 = createLigsiteGrid(protein_atom_grid, protein_span)
         grid_channel_2 = createHBondGrid(config, protein.PdbqtAtomsList, protein_span, protein.Mol2MinCoorNp,
-                                         buffer_size=buffer_size, resolution=resolution,display_flag=display_flag)
-        grid_channel_3 = createVDWGrid(config, protein.Mol2AtomsList, protein_span, protein.Mol2MinCoorNp, buffer_size=buffer_size,
-                                       resolution=resolution,display_flag=display_flag)
+                                         buffer_size=buffer_size, resolution=resolution, display_flag=display_flag)
+        grid_channel_3 = createVDWGrid(config, protein.Mol2AtomsList, protein_span, protein.Mol2MinCoorNp,
+                                       buffer_size=buffer_size,
+                                       resolution=resolution, display_flag=display_flag)
         grid_channel_4 = createCoulombForceGrid(config, protein.PdbqtAtomsList, protein_span, protein.Mol2MinCoorNp,
-                                                buffer_size=buffer_size, resolution=resolution,display_flag=display_flag)
+                                                buffer_size=buffer_size, resolution=resolution,
+                                                display_flag=display_flag)
 
         # print(grid_channel_1.shape)
         # print(grid_channel_2.shape)
@@ -76,9 +79,10 @@ def getProteinGrids(config, mol2_file_name, pdbqt_file_name, feature_path, pdb_n
             np.save(os.path.join(feature_path, pdb_name, "hbond.npy"), np.array(grid_channel_2))
             np.save(os.path.join(feature_path, pdb_name, "vdw.npy"), np.array(grid_channel_3))
             np.save(os.path.join(feature_path, pdb_name, "coulomb.npy"), np.array(grid_channel_4))
-            np.save(os.path.join(feature_path, pdb_name, "center_position.npy"), np.array(site_center_grid))
+            if site_mol2_file_name != "": # for training and validation
+                np.save(os.path.join(feature_path, pdb_name, "center_position.npy"), np.array(site_center_grid))
         else:
-            protein_grid = np.zeros((grid_channel_1.shape[0], grid_channel_1.shape[1], grid_channel_1.shape[2],4))
+            protein_grid = np.zeros((grid_channel_1.shape[0], grid_channel_1.shape[1], grid_channel_1.shape[2], 4))
             protein_grid[:, :, :, 0] = grid_channel_1
             protein_grid[:, :, :, 1] = grid_channel_2
             protein_grid[:, :, :, 2] = grid_channel_3
