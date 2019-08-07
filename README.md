@@ -48,3 +48,14 @@ python train.py
 ```
 The features (grid descriptor) of the training set，validation set and testing set are stored in data/feature directory. In order to be more efficient, the features of all proteins are calculted and stored before model training and testing.
 
+##prediction
+A trained model is saved in the /model/model.h5. For a new protein in prediction, the mol2 and pdbqt files shuold be prepared for feature calculation. 
+### usage
+```bash
+python predict.py protein.mol2 protein.pdbqt 3/5(pocket number) result_file
+```
+example:
+```bash
+python predict.py example/1c6y_1/protein.mol2 example/1c6y_1/protein.pdbqt 3 ./results_example/result.txt
+```
+
