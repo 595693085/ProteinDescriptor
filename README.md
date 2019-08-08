@@ -11,7 +11,7 @@ python == 3.6.x
 keras == 2.2.4  
 tenforflow-gpu == 1.13.1  
 numpy == 1.16.4  
-tqdm == 4.13.1 
+tqdm == 4.13.1  
 sklearn == 0.20.1
 
 
