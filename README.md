@@ -57,6 +57,6 @@ python predict.py protein.mol2 protein.pdbqt 3/5(pocket number) result_file
 ```
 example:
 ```bash
-python predict.py example/1c6y_1/protein.mol2 example/1c6y_1/protein.pdbqt 3 ./results_example/result.txt
+python predict.py example/1c6y_1/protein.mol2 example/1c6y_1/protein.pdbqt 3 results_example/result.txt
 ```
 
